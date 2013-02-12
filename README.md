@@ -7,6 +7,8 @@ CasperJS script for viewing and changing the current network speed of your Yota 
 
 Install [CasperJS](http://casperjs.org/) using [HomeBrew](http://mxcl.github.com/homebrew/)
 
+    brew update
+    brew install phantomjs
     brew install casperjs
 
 Run yota.js script like this
