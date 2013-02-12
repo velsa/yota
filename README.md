@@ -1,11 +1,11 @@
 yota
 ====
 
-CasperJS script for viewing and changing the current network speed of your Yota 4G
+[CasperJS](http://casperjs.org/) script for viewing and changing the current network speed of your Yota 4G
 
 ### Instructions for Mac:
 
-Install [CasperJS](http://casperjs.org/) using [HomeBrew](http://mxcl.github.com/homebrew/)
+Install [PhantomJS](http://phantomjs.org/download.html) and [CasperJS](http://casperjs.org/installation.html) using [HomeBrew](http://mxcl.github.com/homebrew/)
 
     brew update
     brew install phantomjs
