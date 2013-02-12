@@ -8,7 +8,6 @@ yota
 Install [PhantomJS](http://phantomjs.org/download.html) and [CasperJS](http://casperjs.org/installation.html) using [HomeBrew](http://mxcl.github.com/homebrew/)
 
     brew update
-    brew install phantomjs
     brew install casperjs
 
 Run yota.js script like this
