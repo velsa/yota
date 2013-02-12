@@ -26,3 +26,4 @@ To run it from command line conveniently, add this to your `~/.bashrc`
 And then you can simply run it like this:
 
     ~ > yota status
+
