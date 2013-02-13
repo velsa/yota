@@ -1,8 +1,8 @@
 //
 // SET YOUR CREDENTIALS HERE
 //
-var login       = null,
-    password    = null;
+var login       = '',
+    password    = '';
 
 
 
@@ -30,7 +30,7 @@ show_usage_and_exit = function() {
     casper.exit();
 };
 
-if (!login || !password) {
+if (!login.length || !password.length) {
     casper.echo("Пожалуйста настройте ваш login и password в файле yota.js !");
     casper.exit();
 }
@@ -71,7 +71,7 @@ casper.then(function() {
         this.echo("Нет подключения к Интернету ?!");
         this.exit();
     }
-    if (ip[0] === '178' && ip[1] === '176')
+    if (ip[0] === '178' && (ip[1] === '176' || ip[1] === '177'))
         this.echo("Вы подключены к Интернету через Yota");
     else
         this.echo("ВНИМАНИЕ: Вы НЕ подключены к Интернету через Yota !");
@@ -182,13 +182,13 @@ switch (casper.cli.args[0]) {
         show_usage_and_exit();
 }
 
-casper.then(function() {
-     this.capture('3.png', {
-        top: 100,
-        left: 0,
-        width: 600,
-        height: 600
-    });
-});
+// casper.then(function() {
+//     this.capture('3.png', {
+//        top: 100,
+//        left: 0,
+//        width: 600,
+//        height: 600
+//    });
+//});
 
 casper.run();
