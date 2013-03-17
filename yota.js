@@ -6,8 +6,6 @@ var login       = '',
 
 
 
-
-
 //
 // DON'T MODIFY ANYTHING BELOW THIS LINE
 //
@@ -71,7 +69,9 @@ casper.then(function() {
         this.echo("Нет подключения к Интернету ?!");
         this.exit();
     }
-    if (ip[0] === '178' && (ip[1] === '176' || ip[1] === '177'))
+    var yota_ip_range = [ "178.176", "178.177", "109.188" ],
+        our_ip = ip[0] + '.' + ip[1];
+    if (yota_ip_range.indexOf(our_ip) !== -1)
         this.echo("Вы подключены к Интернету через Yota");
     else
         this.echo("ВНИМАНИЕ: Вы НЕ подключены к Интернету через Yota !");
