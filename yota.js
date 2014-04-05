@@ -87,7 +87,7 @@ casper.thenOpen(base_url+'login');
 
 casper.thenEvaluate(function(login, password) {
     $('input[name=IDToken1]').attr('value', login);
-    $('input[name=IDToken3]').attr('value', password);
+    $('input[name=IDToken2]').attr('value', password);
     $('#doSubmitLoginForm').click();
 }, login, password);
 
