@@ -14,7 +14,7 @@ Install [PhantomJS](http://phantomjs.org/download.html) and [CasperJS](http://ca
 
 Install [PhantomJS](http://phantomjs.org/download.html) and [CasperJS](http://casperjs.org/installation.html) using npm
 
-    npm install casperjs -g
+    npm install casperjs phantomjs -g
 
 Run yota.js script like this
 
