@@ -10,8 +10,14 @@ Install [PhantomJS](http://phantomjs.org/download.html) and [CasperJS](http://ca
     brew update
     brew install casperjs
 
+### Instructions for Linux:
+
+Install [PhantomJS](http://phantomjs.org/download.html) and [CasperJS](http://casperjs.org/installation.html) using npm
+
+    npm install casperjs phantomjs -g
+
 Run yota.js script like this
-    
+
     casperjs yota.js
 
 You will get usage instructions
@@ -20,11 +26,10 @@ You will get usage instructions
 
 To run it from command line conveniently, add this to your `~/.bashrc`
 
-    function yota() { 
-        casperjs ~/yota.js $@ 
+    function yota() {
+        casperjs ~/yota.js $@
     }
 
 And then you can simply run it like this:
 
-    ~ > yota status
-
+    $ yota status

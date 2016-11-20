@@ -5,20 +5,28 @@ var login       = '',
     password    = '';
 
 
-
-//
-// DON'T MODIFY ANYTHING BELOW THIS LINE
-//
-// ----------------------------------------------------------------------------------------------
-//
 var ip_url      = 'http://www.myglobalip.com/',
     base_url    = 'https://my.yota.ru/selfcare/',
     login_url   = 'login',
-    dev_url     = 'devices';
+    dev_url     = 'devices',
+    DEBUG       = false;
+
 var casper = require('casper').create({
     verbose: false,
-    logLevel: 'debug'
+    logLevel: 'debug',
+    waitTimeout: 2000
 });
+
+capture = function(name){
+    casper.then(function() {
+        this.capture(name, {
+            top: 100,
+            left: 0,
+            width: 600,
+            height: 600
+        });
+    });
+};
 
 show_usage_and_exit = function() {
     casper.echo("Usage: yota [ status | list | set <desired-speed> ]");
@@ -48,17 +56,7 @@ if (casper.cli.args[0] === 'set') {
     }
 }
 
-
 casper.start(ip_url);
-
-// casper.then(function() {
-//      this.capture('0.png', {
-//         top: 100,
-//         left: 0,
-//         width: 600,
-//         height: 600
-//     });
-// });
 
 casper.then(function() {
     var ip = this.evaluate(function() {
@@ -69,47 +67,37 @@ casper.then(function() {
         this.echo("Нет подключения к Интернету ?!");
         this.exit();
     }
-    var yota_ip_range = [ "178.176", "178.177", "109.188" ],
+    var yota_ip_range = [ "178.176", "178.177", "109.188", "188.162" ],
         our_ip = ip[0] + '.' + ip[1];
-    if (yota_ip_range.indexOf(our_ip) !== -1)
+    if (yota_ip_range.indexOf(our_ip) !== -1){
         this.echo("Вы подключены к Интернету через Yota");
-    else
+    }
+    else{
         this.echo("ВНИМАНИЕ: Вы НЕ подключены к Интернету через Yota !");
+    }
 });
 
-casper.thenOpen(base_url+'login');
+casper.thenOpen(base_url + 'login');
 
-// casper.then(function() {
-//     this.test.assertExists('input[name=IDToken1]', 'login field is found');
-//     this.test.assertExists('input[name=IDToken1]', 'password field is found');
-//     this.test.assertExists('#doSubmitLoginForm', 'submit button is found');
-// });
+if(DEBUG){
+    capture('0.png');
+}
 
 casper.thenEvaluate(function(login, password) {
-    $('input[name=IDToken1]').attr('value', login);
+    $('input[id=IDToken1]').attr('value', login);
     $('input[name=IDToken2]').attr('value', password);
     $('#doSubmitLoginForm').click();
 }, login, password);
 
-// casper.then(function() {
-//      this.capture('1.png', {
-//         top: 100,
-//         left: 0,
-//         width: 600,
-//         height: 600
-//     });
-// });
+if(DEBUG){
+    capture('1.png');
+}
 
-casper.thenOpen(base_url+'devices');
+casper.thenOpen(base_url + 'devices');
 
-// casper.then(function() {
-//      this.capture('2.png', {
-//         top: 100,
-//         left: 0,
-//         width: 600,
-//         height: 600
-//     });
-// });
+if(DEBUG){
+    capture('2.png');
+}
 
 switch (casper.cli.args[0]) {
     case 'status':
@@ -119,7 +107,7 @@ switch (casper.cli.args[0]) {
                 var f = $('.tariff-choice-form');
                 var steps = sliderData[f.find('input[name="product"]').val()].steps;
                 var offerCode = f.find('input[name="offerCode"]').val();
-                for (var i = 0; i < steps.length; i++) {
+                for (var i = 0; i < steps.length; ++i) {
                     if(steps[i].code == offerCode) {
                         result = 'План: '+steps[i].name + '\nОсталось: ' + steps[i].remainNumber + ' дней';
                         break;
@@ -139,17 +127,19 @@ switch (casper.cli.args[0]) {
                 var steps = sliderData[f.find('input[name="product"]').val()].steps;
                 for (var i = 0; i < steps.length; i++) {
                     var speedNumber = steps[i].speedNumber;
-                    variants[i] = (/max/.test(speedNumber) ? 'max : ' : speedNumber +' : ') + (steps[i].name || steps[i].description) + '(остаток ' + steps[i].remainNumber + ')';
+                    variants[i] = (/max/.test(speedNumber) ? 'max : ' : speedNumber +' : ')
+                        + (steps[i].name || steps[i].description)
+                        + '(остаток ' + steps[i].remainNumber + ')';
                 }
                 return variants;
             });
-            for (var i = 0; i < variants.length; i++) {
+            for (var i = 0; i < variants.length; ++i) {
                 this.echo(variants[i]);
             }
         });
     break;
 
-    case "set":
+    case 'set':
         casper.then(function() {
             var new_status = this.evaluate(function(speed) {
                 var f = $('.tariff-choice-form');
@@ -158,7 +148,7 @@ switch (casper.cli.args[0]) {
                 var offerCode = null;
                 var status = "";
                 var isDisablingAutoprolong = false;
-                for (var i = 0; i < steps.length; i++) {
+                for (var i = 0; i < steps.length; ++i) {
                     if (steps[i].speedNumber == speed || (speed == 'max' && steps[i].speedNumber.contains('max'))) {
                         offerCode = steps[i].code;
                         status = 'Новый План: '+steps[i].name + '\nОсталось: ' + steps[i].remainNumber + ' дней';
@@ -177,18 +167,13 @@ switch (casper.cli.args[0]) {
             this.echo(new_status);
         });
     break;
+
     default:
         casper.echo("Неизвестный аргумент " + casper.cli.args[0]);
         show_usage_and_exit();
 }
 
-// casper.then(function() {
-//     this.capture('3.png', {
-//        top: 100,
-//        left: 0,
-//        width: 600,
-//        height: 600
-//    });
-//});
-
+if(DEBUG){
+    capture('3.png');
+}
 casper.run();
